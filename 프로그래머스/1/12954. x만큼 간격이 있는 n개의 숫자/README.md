@@ -56,3 +56,11 @@
       </table>
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+
+---
+
+### 💡 정리
+
+- int 의 표현 범위는 -20억 ~ +20억
+- 계산 결과가 int 범위를 넘어가는 경우 long으로 선언
+  - int 자료형끼리 계산하는 경우 결과도 int로 정해짐
