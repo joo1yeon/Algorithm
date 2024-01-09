@@ -12,6 +12,7 @@ class Solution {
     static final int[] dr = {-1, 0, 1, 0};
     static final int[] dc = {0, 1, 0, -1};
     // 상, 우, 하, 좌
+    // 현재 터널의 어떤 방향이 뚫렸는지 기록
     static int[][] tunnel = {
             {},
             {1, 1, 1, 1},
@@ -32,11 +33,11 @@ class Solution {
         for (int tc = 1; tc <= T; tc++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
 
-            N = Integer.parseInt(st.nextToken());
-            M = Integer.parseInt(st.nextToken());
-            R = Integer.parseInt(st.nextToken());
-            C = Integer.parseInt(st.nextToken());
-            L = Integer.parseInt(st.nextToken());
+            N = Integer.parseInt(st.nextToken()); // 행
+            M = Integer.parseInt(st.nextToken()); // 열
+            R = Integer.parseInt(st.nextToken()); // 시작 행
+            C = Integer.parseInt(st.nextToken()); // 시작 열
+            L = Integer.parseInt(st.nextToken()); // 제한 시간
 
             map = new int[N][M];
             visited = new boolean[N][M];
@@ -79,15 +80,19 @@ class Solution {
                 int tunnelNum = map[now.row][now.col];
 
                 for (int d = 0; d < 4; d++) {
+                    // 현재 터널의 해당 방향이 뚫려있는지 확인
                     if (tunnel[tunnelNum][d] == 1) {
                         int nr = now.row + dr[d];
                         int nc = now.col + dc[d];
 
+                        // 옆칸 이동 가능한지 체크
                         if (nr < 0 || nr >= N || nc < 0 || nc >= M || map[nr][nc] == 0 || visited[nr][nc]) {
                             continue;
                         }
-                        int nextTunnelNum = map[nr][nc];
 
+                        int nextTunnelNum = map[nr][nc]; // 옆 칸 터널 번호
+
+                        // 옆 파이프의 현재 내 방향과 반대 방향 뚫려있는지 확인
                         if (tunnel[nextTunnelNum][(d + 2) % 4] == 1) {
                             visited[nr][nc] = true;
                             queue.add(new Point(nr, nc));
