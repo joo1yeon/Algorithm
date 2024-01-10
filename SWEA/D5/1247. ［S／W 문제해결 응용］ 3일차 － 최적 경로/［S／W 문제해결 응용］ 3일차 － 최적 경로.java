@@ -7,6 +7,7 @@ class Solution {
     static int N, answer;
     static Point company, home;
     static Point[] customer;
+    static boolean[] visited;
 
     public static void main(String args[]) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,6 +18,7 @@ class Solution {
         for (int tc = 1; tc <= T; tc++) {
             N = Integer.parseInt(br.readLine());
             customer = new Point[N];
+            visited = new boolean[N];
             answer = Integer.MAX_VALUE;
 
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -28,28 +30,30 @@ class Solution {
                 customer[i] = new Point(st.nextToken(), st.nextToken());
             }
 
-            dfs(0, company, 0, 0);
+            dfs(0, company, 0);
 
             sb.append('#').append(tc).append(' ').append(answer).append('\n');
         }
         System.out.println(sb);
     }
 
-    static void dfs(int idx, Point prev, int route, int flag) {
+    static void dfs(int cnt, Point prev, int route) {
         if (route >= answer) {
             return;
         }
 
-        if (idx == N) {
+        if (cnt == N) {
             answer = Math.min(answer, route + home.getDistance(prev));
             return;
         }
 
         for (int i = 0; i < N; i++) {
-            if ((flag & 1 << i) != 0) {
+            if (visited[i]) {
                 continue;
             }
-            dfs(idx + 1, customer[i], route + customer[i].getDistance(prev), flag | 1 << i);
+            visited[i] = true;
+            dfs(cnt + 1, customer[i], route + customer[i].getDistance(prev));
+            visited[i] = false;
         }
     }
 }
