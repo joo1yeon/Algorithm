@@ -1,5 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 class Solution {
@@ -7,14 +6,8 @@ class Solution {
     static int N, K;
     static HashSet<String> set;
     static Integer[] decimal;
-    static final int A = 10;
-    static final int B = 11;
-    static final int C = 12;
-    static final int D = 13;
-    static final int E = 14;
-    static final int F = 15;
 
-    public static void main(String args[]) throws Exception {
+    public static void main (String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
@@ -50,9 +43,7 @@ class Solution {
 
         int idx = 0;
         while (iterator.hasNext()) {
-            int temp = 0;
-            String hexa = iterator.next().toString();
-            temp = Integer.parseInt(hexa, 16);
+            int temp = Integer.parseInt(iterator.next().toString(), 16);
             decimal[idx++] = temp;
         }
     }
