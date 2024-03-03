@@ -1,14 +1,12 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
 class Main {
 
     static int N, M, K;
-    static ArrayList<Integer>[] map;
+    static ArrayList<Fireball>[] map;
     static ArrayList<Fireball> fireballs;
     static final int[] dr = {-1, -1, 0, 1, 1, 1, 0, -1};
     static final int[] dc = {0, 1, 1, 1, 0, -1, -1, -1};
@@ -22,6 +20,10 @@ class Main {
         K = Integer.parseInt(st.nextToken());
 
         map = new ArrayList[N * N];
+
+        for (int j = 0; j < N * N; j++) {
+            map[j] = new ArrayList<>();
+        }
 
         fireballs = new ArrayList<>();
 
@@ -38,10 +40,6 @@ class Main {
         }
 
         for (int i = 0; i < K; i++) {
-            for (int j = 0; j < N * N; j++) {
-                map[j] = new ArrayList<>();
-            }
-
             move();
         }
 
@@ -49,7 +47,7 @@ class Main {
     }
 
     static void move() {
-        for (int i = fireballs.size() - 1; i >= 0; i--) {
+        for (int i = 0; i < fireballs.size(); i++) {
             Fireball f = fireballs.get(i);
             // 이동
             f.r += dr[f.d] * f.s;
@@ -57,10 +55,9 @@ class Main {
             f.r = check(f.r);
             f.c = check(f.c);
 
-            map[f.r * N + f.c].add(i);
+            map[f.r * N + f.c].add(f);
         }
 
-        ArrayList<Integer> fireballIdx = new ArrayList<>();
         for (int i = 0; i < map.length; i++) {
             if (map[i].size() >= 2) {
                 int sumM = 0;
@@ -69,8 +66,7 @@ class Main {
                 int odd = 0;
                 int row = 0;
                 int col = 0;
-                for (int idx : map[i]) {
-                    Fireball f = fireballs.get(idx);
+                for (Fireball f : map[i]) {
                     sumM += f.m;
                     sumS += f.s;
                     if (f.d % 2 == 0) {
@@ -80,7 +76,7 @@ class Main {
                     }
                     row = f.r;
                     col = f.c;
-                    fireballIdx.add(idx);
+                    fireballs.remove(f);
                 }
 
 
@@ -93,18 +89,16 @@ class Main {
                 }
 
                 if (mass == 0) {
+                    map[i].clear();
                     continue;
                 }
 
                 for (int d = 0; d < 4; d++, dir += 2) {
                     fireballs.add(new Fireball(row, col, mass, speed, dir));
                 }
+
             }
-        }
-        // 파이어볼 하나로 합쳐진다.
-        Collections.sort(fireballIdx, Collections.reverseOrder());
-        for (int idx : fireballIdx) {
-            fireballs.remove(idx);
+            map[i].clear();
         }
     }
 
