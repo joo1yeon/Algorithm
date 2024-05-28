@@ -15,7 +15,7 @@ class Main {
         int sum = num[start];
         int count = 0;
 
-        while (end < N && start <= end) {
+        while (end < N) {
             if (sum < N) {
                 sum += num[++end];
             } else if (sum > N) {
