@@ -27,22 +27,16 @@ class Main {
 
         int start = 0;
         int end = N - 1;
-        int sum = ingredient[start] + ingredient[end];
 
         while (start < end) {
+            int sum = ingredient[start] + ingredient[end];
             if (sum < M) {
-                sum -= ingredient[start];
                 start++;
-                sum += ingredient[start];
             } else if (sum > M) {
-                sum -= ingredient[end];
                 end--;
-                sum += ingredient[end];
             } else {
                 cnt++;
-                sum -= ingredient[start];
                 start++;
-                sum += ingredient[start];
             }
         }
 
