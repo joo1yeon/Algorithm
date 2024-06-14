@@ -14,7 +14,7 @@ class Main {
             int absO2 = Math.abs(o2);
 
             if (absO1 == absO2) {
-                return o1 - o2;
+                return o1 < o2 ? -1 : 1; 
             }
 
             return absO1 - absO2;
