@@ -28,7 +28,7 @@ class Main {
             boolean find = false;
 
             while (start <= end) {
-                int midIdx = (start + end) / 2;
+                int midIdx = (start + end) >> 1;
                 int midVal = num[midIdx];
 
                 if (target > midVal) {
