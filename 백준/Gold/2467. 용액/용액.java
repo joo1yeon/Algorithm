@@ -18,7 +18,7 @@ class Main {
         }
 
         int ans1 = 0, ans2 = 0;
-        long min = Long.MAX_VALUE;
+        int min = Integer.MAX_VALUE;
 
         for (int i = 0; i < N; i++) {
             int start = i + 1;
@@ -26,7 +26,7 @@ class Main {
 
             while (start <= end) {
                 int mid = (start + end) >> 1;
-                long sum = Math.abs(solution[i] + solution[mid]);
+                int sum = Math.abs(solution[i] + solution[mid]);
 
                 if (min > sum) {
                     min = sum;
