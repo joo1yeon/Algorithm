@@ -56,10 +56,10 @@ class Main {
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
         distance[K] = 0;
         pq.offer(new Node(K, 0));
+        visited[K] = true;
 
         while (!pq.isEmpty()) {
             Node now = pq.poll();
-            visited[now.end] = true;
 
             for (Node next : graph[now.end]) {
                 if (visited[next.end]) {
@@ -68,6 +68,7 @@ class Main {
                 if (distance[next.end] > distance[now.end] + next.weight) {
                     distance[next.end] = distance[now.end] + next.weight;
                     pq.offer(new Node(next.end, distance[next.end]));
+                    visited[now.end] = true;
                 }
             }
         }
