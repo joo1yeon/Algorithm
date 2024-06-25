@@ -42,7 +42,7 @@ class Main {
         int res1 = dijkstra(1, v1) + dijkstra(v1, v2) + dijkstra(v2, N);
         int res2 = dijkstra(1, v2) + dijkstra(v2, v1) + dijkstra(v1, N);
 
-        if (res1 + res2 < 0 || res1 + res2 > INF) {
+        if (res1 < 0 || res1 >= INF || res2 < 0 || res2 >= INF) {
             System.out.println(-1);
         } else {
             System.out.println(Math.min(res1, res2));
