@@ -1,15 +1,15 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 class Main {
 
     static int N, M, X, answer;
-    static int[] distance, distance1, distance2;
-    static boolean[] visited;
-    static ArrayList<Node>[] graph;
+    static int[] distance1, distance2;
+    static ArrayList<Node>[] origin_graph, reverse_graph;
     static final int INF = 1_000_001;
 
     public static void main(String[] args) throws Exception {
@@ -20,12 +20,12 @@ class Main {
         M = Integer.parseInt(st.nextToken());
         X = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[N + 1];
+        origin_graph = new ArrayList[N + 1];
+        reverse_graph = new ArrayList[N + 1];
 
-        distance = new int[N + 1];
         for (int i = 1; i <= N; i++) {
-            graph[i] = new ArrayList<>();
-            distance[i] = INF;
+            origin_graph[i] = new ArrayList<>();
+            reverse_graph[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < M; i++) {
@@ -34,47 +34,32 @@ class Main {
             int end = Integer.parseInt(st.nextToken());
             int time = Integer.parseInt(st.nextToken());
 
-            graph[start].add(new Node(end, time));
+            origin_graph[start].add(new Node(end, time));
+            reverse_graph[end].add(new Node(start, time));
         }
 
-        dijkstra(X, 0);
-
-        distance1 = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            distance1[i] = distance[i];
-        }
-
-        distance2 = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            if (i != X) {
-                distance = new int[N + 1];
-                for (int j = 1; j <= N; j++) {
-                    distance[j] = INF;
-                }
-                distance2[i] = dijkstra(i, X);
-            }
-        }
+        distance1 = dijkstra(origin_graph);
+        distance2 = dijkstra(reverse_graph);
 
         for (int i = 1; i <= N; i++) {
-            int temp = distance1[i] + distance2[i];
-            answer = Math.max(temp, answer);
+            answer = Math.max(distance1[i] + distance2[i], answer);
         }
 
         System.out.println(answer);
     }
 
-    static int dijkstra(int start, int end) {
-        distance[start] = 0;
+    static int[] dijkstra(ArrayList<Node>[] graph) {
+        int[] distance = new int[N + 1];
+        Arrays.fill(distance, INF);
         boolean[] visited = new boolean[N + 1];
+        distance[X] = 0;
+
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
-        pq.offer(new Node(start, 0));
+        pq.offer(new Node(X, 0));
 
         while (!pq.isEmpty()) {
             Node now = pq.poll();
             visited[now.node] = true;
-            if (now.node == end) {
-                return distance[end];
-            }
 
             for (Node next : graph[now.node]) {
                 if (visited[next.node]) {
@@ -86,7 +71,7 @@ class Main {
                 }
             }
         }
-        return 1;
+        return distance;
     }
 }
 
